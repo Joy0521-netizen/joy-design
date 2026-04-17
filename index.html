@@ -92,7 +92,7 @@
     </footer>
 
     <script>
-        // 圖片清單 (已剔除 e05, f06, f12)
+        // 圖片清單 (已補回 e03，其餘 c03, e05, f06, f12 維持剔除)
         const imageNames = [
             'a01','a02','a03','a04','a05','b01','b02','b03','b04','b05',
             'c01','c02','d01','d02','d03','d04','d05','d06','d07',
@@ -101,12 +101,12 @@
             'f09','f10','f11'
         ];
         
-        // 影片清單 (放在最後)
+        // 影片清單 (大寫 .MP4)
         const videoNames = ['01', '02', '03', '04', '05', '06', '07'];
 
         const grid = document.getElementById('portfolio-grid');
 
-        // 先生成圖片
+        // 1. 生成圖片
         imageNames.forEach(name => {
             const div = document.createElement('div');
             div.className = 'thumb reveal';
@@ -120,9 +120,9 @@
             grid.appendChild(div);
         });
 
-        // 後生成影片 (讓它排在最下面)
+        // 2. 生成影片 (路徑大寫 .MP4)
         videoNames.forEach(name => {
-            const path = `videos/${name}.mp4`;
+            const path = `videos/${name}.MP4`;
             const div = document.createElement('div');
             div.className = 'thumb reveal';
             div.onclick = () => openLightbox(path, true);
