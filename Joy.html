@@ -5,6 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joy Design | AI Visual Lab</title>
     <style>
+        /* 作品縮圖區：強制作為三欄分佈 */
+        .grid { 
+            display: grid; 
+            /* 這裡是關鍵：1fr 代表平均分配空間，重複三次就是三欄 */
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 20px; /* 圖片之間的間距，妳可以自己調 */
+            margin-top: 60px; 
+        }
+
+        /* 縮圖容器：確保圖片不會爆出去 */
+        .thumb {
+            width: 100%;
+            aspect-ratio: 16/10; /* 固定比例，這會讓妳的排版像雜誌一樣整齊 */
+            overflow: hidden; 
+            border: 1px solid #222; 
+            background: #000;
+            position: relative; 
+            transition: 0.5s;
+        }
+
+        /* 針對手機版的優化：手機上一排三個會太小，自動變一排一個 */
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
         /* 紫黑色系定義 */
         :root { 
             --bg-dark: #050208; /* 極致深紫黑 */
