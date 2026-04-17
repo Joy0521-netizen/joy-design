@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joy Design | AI Visual Lab</title>
+    <style>
+        /* 紫黑色系定義 */
+        :root { 
+            --bg-dark: #050208; /* 極致深紫黑 */
+            --bg-accent: #1a0b2e; /* 深紫色 */
+            --text-main: #ffffff; 
+            --text-sub: #b19cd9; /* 淺紫色文字 */
+            --line: #331b5d; 
+        }
+        
+        body { 
+            background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-accent) 100%);
+            color: var(--text-main); 
+            font-family: "Playfair Display", serif; 
+            margin: 0; 
+            -webkit-user-select: none; 
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        /* 視差區塊 */
+        .parallax-section {
+            height: 100vh;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* 紫色光暈蒙版 */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(26,11,46,0.3) 0%, rgba(5,2,8,0.8) 100%);
+        }
+
+        .title-box { z-index: 1; text-align: center; }
+        h1 { 
+            font-size: 5rem; 
+            letter-spacing: 25px; 
+            text-transform: uppercase; 
+            font-weight: 200; 
+            margin: 0;
+            text-shadow: 0 0 30px rgba(177,156,217,0.5); /* 紫色霓虹感 */
+        }
+        .subtitle { 
+            font-family: sans-serif; 
+            letter-spacing: 10px; 
+            font-size: 0.75rem; 
+            color: var(--text-sub); 
+            margin-top: 20px; 
+        }
+
+        /* 作品集格線 */
+        .content-section {
+            padding: 120px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        /* 縮圖容器：禁止下載、固定比例 */
+        .thumb-container {
+            width: 100%;
+            aspect-ratio: 16/10;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid var(--line);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .thumb-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none; /* 禁止抓取 */
+            transition: transform 0.8s ease;
+        }
+
+        /* 底部版權宣告 */
+        footer {
+            padding: 100px 20px;
+            background: var(--bg-dark);
+            border-top: 1px solid var(--line);
+            text-align: center;
+        }
+
+        .copyright {
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: var(--text-sub);
+            line-height: 2;
+        }
+
+        /* 動態顯示 */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1.2s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body oncontextmenu="return false;"> <section class="parallax-section" style="background-image: url('妳的背景大圖連結');">
+        <div class="overlay"></div>
+        <div class="title-box reveal">
+            <h1>Joy Design</h1>
+            <div class="subtitle">AI ART DIRECTION • VISUAL LAB</div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div style="text-align: center; margin-bottom: 80px;">
+            <h2 style="font-weight: 200; letter-spacing: 12px; font-size: 1.8rem;">CURATED WORKS</h2>
+            <div style="width: 50px; height: 1px; background: var(--text-sub); margin: 20px auto;"></div>
+        </div>
+
+         <div class="grid">
+            <div class="thumb reveal"><img src="images/a01.jpg" alt="Work A01"></div>
+            <div class="thumb reveal"><img src="images/a02.jpg" alt="Work A02"></div>
+            <div class="thumb reveal"><img src="images/a03.jpg" alt="Work A03"></div>
+            <div class="thumb reveal"><img src="images/a04.jpg" alt="Work A04"></div>
+            <div class="thumb reveal"><img src="images/a05.jpg" alt="Work A05"></div>
+
+            <div class="thumb reveal"><img src="images/b01.jpg" alt="Work B01"></div>
+            <div class="thumb reveal"><img src="images/b02.jpg" alt="Work B02"></div>
+            <div class="thumb reveal"><img src="images/b03.jpg" alt="Work B03"></div>
+            <div class="thumb reveal"><img src="images/b04.jpg" alt="Work B04"></div>
+            <div class="thumb reveal"><img src="images/b05.jpg" alt="Work B05"></div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="copyright reveal">
+            © 2026 JOY DESIGN. ALL RIGHTS RESERVED.<br>
+            ART DIRECTION & AI GENERATIVE VISUALS BY JOY.<br>
+            <span style="opacity: 0.5;">UNAUTHORIZED USE OR REPRODUCTION OF THESE IMAGES IS STRICTLY PROHIBITED.</span>
+        </div>
+    </footer>
+
+    <script>
+        // 捲動偵測
+        function reveal() {
+            var reveals = document.querySelectorAll('.reveal');
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var revealTop = reveals[i].getBoundingClientRect().top;
+                if (revealTop < windowHeight - 100) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        window.addEventListener('scroll', reveal);
+        reveal(); // 頁面載入先跑一次
+        
+        // 禁止圖片拖拽
+        document.ondragstart = function() { return false; };
+    </script>
+</body>
+</html>
