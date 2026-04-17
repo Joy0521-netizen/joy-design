@@ -53,30 +53,55 @@
 
         .work-container { max-width: 1200px; margin: 80px auto; padding: 0 20px; }
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
-        
+
+
+     /* --- 基礎縮圖設定 (電腦 & 手機通用) --- */
         .thumb {
             aspect-ratio: 1/1; overflow: hidden; border: 1px solid #222; background: #000;
             position: relative; transition: 0.5s; cursor: zoom-in;
+            border-radius: 4px; /* 加一點微圓角，更有現代感 */
         }
 
         .thumb img, .thumb video { 
             width: 100%; height: 100%; object-fit: cover; 
-            transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); 
+            filter: brightness(0.9); /* 平常稍微沉穩一點 */
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1); 
+            will-change: transform, filter; /* 優化手機滑動效能 */
         }
 
-        .thumb:hover img, .thumb:hover video { 
-            transform: scale(1.05); filter: brightness(0.7); 
+        /* --- 電腦版專屬：滑鼠互動 --- */
+        @media (min-width: 901px) {
+            .thumb:hover img, .thumb:hover video { 
+                transform: scale(1.08); /* 稍微放大 */
+                filter: brightness(1.1); /* 變亮，取消霧化 */
+            }
+            .thumb:hover {
+                border-color: var(--text-gold); /* 邊框變金，強化選取感 */
+                box-shadow: 0 0 20px rgba(177, 156, 217, 0.3);
+            }
         }
 
+        /* --- 手機版專屬：自適應排版與清晰度 --- */
         @media (max-width: 900px) {
-            .grid { grid-template-columns: repeat(1, 1fr); }
-            h1 { font-size: 2.5rem; letter-spacing: 8px; }
-        }
+            .grid { 
+                grid-template-columns: repeat(2, 1fr); /* 兩排排版最適合 Retina 顯示 */
+                gap: 12px; 
+            }
+            
+            h1 { font-size: 2.2rem; letter-spacing: 5px; }
+            .tagline { font-size: 0.9rem; letter-spacing: 1px; }
 
-        footer { padding: 80px 20px; border-top: 1px solid #1a0b2e; text-align: center; background: #050208; }
-        .copyright { font-size: 0.65rem; letter-spacing: 3px; color: #666; line-height: 2; }
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+            /* 強制手機版清晰度 100%，不套用任何霧化 */
+            .thumb img, .thumb video {
+                filter: brightness(1) blur(0px) !important;
+            }
+
+            /* 手機點擊時的微反饋（Active 狀態） */
+            .thumb:active {
+                transform: scale(0.96); /* 點下去縮小一點點，像按鈕一樣 */
+                opacity: 0.8;
+            }
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 </head>
