@@ -9,7 +9,171 @@
             --deep-bg: #050208; 
             --accent-purple: #1a0b2e; 
             --glow: #b19cd9;
+            --text-gold: #d4af37; <!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joy Design | AI Visual Lab</title>
+    <style>
+        :root { 
+            --deep-bg: #050208; 
+            --accent-purple: #1a0b2e; 
+            --glow: #b19cd9;
             --text-gold: #d4af37; 
+        }
+        
+        body { 
+            background: var(--deep-bg); color: #fff; 
+            font-family: "Playfair Display", "Noto Sans TC", serif; margin: 0; 
+            -webkit-user-select: none; user-select: none; 
+            overflow-x: hidden;
+        }
+
+        #lightbox {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.95); z-index: 10000; cursor: zoom-out; 
+            align-items: center; justify-content: center; backdrop-filter: blur(10px);
+        }
+
+        .hero {
+            height: 80vh;
+            background: fixed center/cover url('images/SCPE_BloodSplatter1.png');
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: relative;
+        }
+        .hero::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(26,11,46,0.3) 0%, rgba(5,2,8,0.9) 100%);
+        }
+
+        .hero-content { z-index: 2; text-align: center; }
+        h1 { font-size: 4rem; letter-spacing: 15px; margin: 0; font-weight: 200; text-shadow: 0 0 20px var(--glow); }
+        .tagline { color: var(--text-gold); font-style: italic; font-size: 1.1rem; margin-top: 15px; letter-spacing: 2px; }
+
+        .work-container { max-width: 1200px; margin: 80px auto; padding: 0 20px; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+        
+        .thumb {
+            aspect-ratio: 1/1; overflow: hidden; border: 1px solid #222; background: #000;
+            position: relative; transition: 0.5s; cursor: zoom-in;
+        }
+
+        .thumb img, .thumb video { 
+            width: 100%; height: 100%; object-fit: cover; 
+            transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); 
+        }
+
+        .thumb:hover img, .thumb:hover video { 
+            transform: scale(1.05); filter: brightness(0.7); 
+        }
+
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: repeat(1, 1fr); }
+            h1 { font-size: 2.5rem; letter-spacing: 8px; }
+        }
+
+        footer { padding: 80px 20px; border-top: 1px solid #1a0b2e; text-align: center; background: #050208; }
+        .copyright { font-size: 0.65rem; letter-spacing: 3px; color: #666; line-height: 2; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body oncontextmenu="return false;">
+
+    <div id="lightbox" onclick="closeLightbox()"></div>
+
+    <section class="hero">
+        <div class="hero-content reveal">
+            <h1>JOY DESIGN</h1>
+            <div class="tagline">「 Directed by Human • Powered by AI 」</div>
+        </div>
+    </section>
+
+    <div class="work-container">
+        <div class="grid" id="portfolio-grid"></div>
+    </div>
+
+    <footer>
+        <div class="copyright reveal">
+            © 2026 JOY DESIGN. ALL RIGHTS RESERVED.<br>
+            <span style="color:var(--text-gold)">ART DIRECTION & AI VISUAL LABORATORY</span>
+        </div>
+    </footer>
+
+    <script>
+        // 圖片清單 (確保 e03 在，剔除 c03, e05, f06, f12)
+        const imageNames = [
+            'a01','a02','a03','a04','a05','b01','b02','b03','b04','b05',
+            'c01','c02','d01','d02','d03','d04','d05','d06','d07',
+            'd08','d09','d10','d11','d12','d13','d14','e01','e02','e03',
+            'e04','f01','f02','f03','f04','f05','f07','f08',
+            'f09','f10','f11'
+        ];
+        
+        // 影片清單
+        const videoNames = ['01', '02', '03', '04', '05', '06', '07'];
+
+        const grid = document.getElementById('portfolio-grid');
+
+        // 1. 生成圖片
+        imageNames.forEach(name => {
+            const div = document.createElement('div');
+            div.className = 'thumb reveal';
+            const img = new Image();
+            const jpgPath = `images/${name}.jpg`;
+            const pngPath = `images/${name}.png`;
+            
+            img.onload = () => setupThumb(div, jpgPath, name);
+            img.onerror = () => setupThumb(div, pngPath, name);
+            img.src = jpgPath;
+            grid.appendChild(div);
+        });
+
+        // 2. 生成影片 (排在最下面，副檔名大寫 .MP4)
+        videoNames.forEach(name => {
+            const path = `videos/${name}.MP4`;
+            const div = document.createElement('div');
+            div.className = 'thumb reveal';
+            div.onclick = () => openLightbox(path, true);
+            div.innerHTML = `<video src="${path}" muted loop autoplay playsinline></video>`;
+            grid.appendChild(div);
+        });
+
+        function setupThumb(container, path, name) {
+            container.onclick = () => openLightbox(path, false);
+            container.innerHTML = `<img src="${path}" alt="${name}">`;
+        }
+
+        function openLightbox(src, isVideo) {
+            const lb = document.getElementById('lightbox');
+            lb.innerHTML = isVideo 
+                ? `<video src="${src}" controls autoplay loop style="max-width:90%; max-height:90%; border:1px solid #333;"></video>`
+                : `<img src="${src}" style="max-width:90%; max-height:90%; border:1px solid #333;">`;
+            lb.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lb = document.getElementById('lightbox');
+            lb.style.display = 'none';
+            lb.innerHTML = ''; 
+            document.body.style.overflow = 'auto';
+        }
+
+        function reveal() {
+            var r = document.querySelectorAll('.reveal');
+            for (var i = 0; i < r.length; i++) {
+                if (r[i].getBoundingClientRect().top < window.innerHeight - 100) r[i].classList.add('active');
+            }
+        }
+        window.addEventListener('scroll', reveal);
+        setInterval(reveal, 500);
+        document.ondragstart = function() { return false; };
+    </script>
+</body>
+</html>
         }
         
         body { 
