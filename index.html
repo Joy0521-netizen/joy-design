@@ -9,17 +9,6 @@
             --deep-bg: #050208; 
             --accent-purple: #1a0b2e; 
             --glow: #b19cd9;
-            --text-gold: #d4af37; <!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joy Design | AI Visual Lab</title>
-    <style>
-        :root { 
-            --deep-bg: #050208; 
-            --accent-purple: #1a0b2e; 
-            --glow: #b19cd9;
             --text-gold: #d4af37; 
         }
         
@@ -30,10 +19,11 @@
             overflow-x: hidden;
         }
 
+        /* 燈箱設定 */
         #lightbox {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.95); z-index: 10000; cursor: zoom-out; 
-            align-items: center; justify-content: center; backdrop-filter: blur(10px);
+            align-items: center; justify-content: center; backdrop-filter: blur(15px);
         }
 
         .hero {
@@ -53,55 +43,55 @@
 
         .work-container { max-width: 1200px; margin: 80px auto; padding: 0 20px; }
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
-
-
-     /* --- 基礎縮圖設定 (電腦 & 手機通用) --- */
+        
         .thumb {
             aspect-ratio: 1/1; overflow: hidden; border: 1px solid #222; background: #000;
             position: relative; transition: 0.5s; cursor: zoom-in;
-            border-radius: 4px; /* 加一點微圓角，更有現代感 */
+            border-radius: 2px;
         }
 
+        /* 質感調教：微霧 0.5px */
         .thumb img, .thumb video { 
             width: 100%; height: 100%; object-fit: cover; 
-            filter: brightness(0.9); /* 平常稍微沉穩一點 */
-            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1); 
-            will-change: transform, filter; /* 優化手機滑動效能 */
+            filter: brightness(0.85) blur(0.5px);
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        /* --- 電腦版專屬：滑鼠互動 --- */
+        /* 電腦版 Hover 效果 */
         @media (min-width: 901px) {
             .thumb:hover img, .thumb:hover video { 
-                transform: scale(1.08); /* 稍微放大 */
-                filter: brightness(1.1); /* 變亮，取消霧化 */
-            }
-            .thumb:hover {
-                border-color: var(--text-gold); /* 邊框變金，強化選取感 */
-                box-shadow: 0 0 20px rgba(177, 156, 217, 0.3);
+                transform: scale(1.05); 
+                filter: brightness(1.1) blur(0px);
             }
         }
 
-        /* --- 手機版專屬：自適應排版與清晰度 --- */
+        /* 手機版自適應 */
         @media (max-width: 900px) {
             .grid { 
-                grid-template-columns: repeat(2, 1fr); /* 兩排排版最適合 Retina 顯示 */
-                gap: 12px; 
+                grid-template-columns: repeat(1, 1fr); 
+                gap: 25px; 
             }
+            h1 { font-size: 2.5rem; letter-spacing: 8px; }
             
-            h1 { font-size: 2.2rem; letter-spacing: 5px; }
-            .tagline { font-size: 0.9rem; letter-spacing: 1px; }
-
-            /* 強制手機版清晰度 100%，不套用任何霧化 */
             .thumb img, .thumb video {
-                filter: brightness(1) blur(0px) !important;
+                filter: brightness(0.95) blur(0.3px) !important;
+                -webkit-filter: brightness(0.95) blur(0.3px) !important;
             }
 
-            /* 手機點擊時的微反饋（Active 狀態） */
-            .thumb:active {
-                transform: scale(0.96); /* 點下去縮小一點點，像按鈕一樣 */
-                opacity: 0.8;
+            .thumb:active img, .thumb:active video {
+                filter: brightness(1.1) blur(0px) !important;
+                transform: scale(0.98);
             }
         }
+
+        /* 強化版 Footer 樣式 */
+        footer { padding: 100px 20px; border-top: 1px solid var(--accent-purple); text-align: center; background: #050208; }
+        .copyright-wrapper { max-width: 600px; margin: 0 auto; }
+        .copyright-text { font-size: 0.65rem; letter-spacing: 3px; color: #666; line-height: 2; }
+        .footer-divider { margin: 25px auto; border-top: 1px solid var(--text-gold); width: 40px; opacity: 0.6; }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.2, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -121,14 +111,22 @@
     </div>
 
     <footer>
-        <div class="copyright reveal">
-            © 2026 JOY DESIGN. ALL RIGHTS RESERVED.<br>
-            <span style="color:var(--text-gold)">ART DIRECTION & AI VISUAL LABORATORY</span>
+        <div class="reveal">
+            <div class="copyright-wrapper">
+                <p style="margin-bottom: 10px; color: #888; font-size: 0.7rem; letter-spacing: 2px;">AI VISUAL LAB PROJECT NO. 2026-X</p>
+                <div style="font-size: 0.9rem; letter-spacing: 5px; font-weight: 700; color: #fff;">JOY DESIGN</div>
+                <div class="footer-divider"></div>
+                <div class="copyright-text">
+                    © 2026 JOY DESIGN. ALL RIGHTS RESERVED.<br>
+                    <span style="color:var(--text-gold)">ART DIRECTION & AI VISUAL LABORATORY</span><br>
+                    <span style="font-size: 0.55rem; opacity: 0.5;">TAIWAN, TAINAN | UNAUTHORIZED USE PROHIBITED.</span>
+                </div>
+            </div>
         </div>
     </footer>
 
     <script>
-        // 圖片清單 (確保 e03 在，剔除 c03, e05, f06, f12)
+        // 圖片清單
         const imageNames = [
             'a01','a02','a03','a04','a05','b01','b02','b03','b04','b05',
             'c01','c02','d01','d02','d03','d04','d05','d06','d07',
@@ -138,7 +136,7 @@
         ];
         
         // 影片清單
-        const videoNames = ['01', '02', '03', '04', '05', '06', '07'];
+        const videoNames = ['01', '02', '03', '04', '05', '06'];
 
         const grid = document.getElementById('portfolio-grid');
 
@@ -156,7 +154,7 @@
             grid.appendChild(div);
         });
 
-        // 2. 生成影片 (排在最下面，副檔名大寫 .MP4)
+        // 2. 生成影片
         videoNames.forEach(name => {
             const path = `videos/${name}.MP4`;
             const div = document.createElement('div');
@@ -174,8 +172,8 @@
         function openLightbox(src, isVideo) {
             const lb = document.getElementById('lightbox');
             lb.innerHTML = isVideo 
-                ? `<video src="${src}" controls autoplay loop style="max-width:90%; max-height:90%; border:1px solid #333;"></video>`
-                : `<img src="${src}" style="max-width:90%; max-height:90%; border:1px solid #333;">`;
+                ? `<video src="${src}" controls autoplay loop style="max-width:90%; max-height:90%; border:1px solid #333; box-shadow:0 0 50px #000;"></video>`
+                : `<img src="${src}" style="max-width:90%; max-height:90%; border:1px solid #333; box-shadow:0 0 50px #000;">`;
             lb.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
@@ -187,167 +185,27 @@
             document.body.style.overflow = 'auto';
         }
 
+        // 捲動顯示邏輯優化
         function reveal() {
-            var r = document.querySelectorAll('.reveal');
-            for (var i = 0; i < r.length; i++) {
-                if (r[i].getBoundingClientRect().top < window.innerHeight - 100) r[i].classList.add('active');
+            const r = document.querySelectorAll('.reveal');
+            for (let i = 0; i < r.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = r[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) {
+                    r[i].classList.add('active');
+                }
             }
         }
+
+        // 事件監聽
         window.addEventListener('scroll', reveal);
-        setInterval(reveal, 500);
-        document.ondragstart = function() { return false; };
-    </script>
-</body>
-</html>
-        }
         
-        body { 
-            background: var(--deep-bg); color: #fff; 
-            font-family: "Playfair Display", "Noto Sans TC", serif; margin: 0; 
-            -webkit-user-select: none; user-select: none; 
-            overflow-x: hidden;
-        }
+        // 初始載入觸發
+        window.onload = () => {
+            setTimeout(reveal, 200); // 延遲 200ms 確保 DOM 與圖片載入狀態
+        };
 
-        #lightbox {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.95); z-index: 10000; cursor: zoom-out; 
-            align-items: center; justify-content: center; backdrop-filter: blur(10px);
-        }
-
-        .hero {
-            height: 80vh;
-            background: fixed center/cover url('images/SCPE_BloodSplatter1.png');
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            position: relative;
-        }
-        .hero::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(26,11,46,0.3) 0%, rgba(5,2,8,0.9) 100%);
-        }
-
-        .hero-content { z-index: 2; text-align: center; }
-        h1 { font-size: 4rem; letter-spacing: 15px; margin: 0; font-weight: 200; text-shadow: 0 0 20px var(--glow); }
-        .tagline { color: var(--text-gold); font-style: italic; font-size: 1.1rem; margin-top: 15px; letter-spacing: 2px; }
-
-        .work-container { max-width: 1200px; margin: 80px auto; padding: 0 20px; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
-        
-        .thumb {
-            aspect-ratio: 1/1; overflow: hidden; border: 1px solid #222; background: #000;
-            position: relative; transition: 0.5s; cursor: zoom-in;
-        }
-
-        .thumb img, .thumb video { 
-            width: 100%; height: 100%; object-fit: cover; 
-            transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); 
-        }
-
-        .thumb:hover img, .thumb:hover video { 
-            transform: scale(1.05); filter: brightness(0.7); 
-        }
-
-        @media (max-width: 900px) {
-            .grid { grid-template-columns: repeat(1, 1fr); }
-            h1 { font-size: 2.5rem; letter-spacing: 8px; }
-        }
-
-        footer { padding: 80px 20px; border-top: 1px solid #1a0b2e; text-align: center; background: #050208; }
-        .copyright { font-size: 0.65rem; letter-spacing: 3px; color: #666; line-height: 2; }
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-</head>
-<body oncontextmenu="return false;">
-
-    <div id="lightbox" onclick="closeLightbox()"></div>
-
-    <section class="hero">
-        <div class="hero-content reveal">
-            <h1>JOY DESIGN</h1>
-            <div class="tagline">「 Directed by Human • Powered by AI 」</div>
-        </div>
-    </section>
-
-    <div class="work-container">
-        <div class="grid" id="portfolio-grid"></div>
-    </div>
-
-    <footer>
-        <div class="copyright reveal">
-            © 2026 JOY DESIGN. ALL RIGHTS RESERVED.<br>
-            <span style="color:var(--text-gold)">ART DIRECTION & AI VISUAL LABORATORY</span>
-        </div>
-    </footer>
-
-    <script>
-        // 圖片清單 (已補回 e03，其餘 c03, e05, f06, f12 維持剔除)
-        const imageNames = [
-            'a01','a02','a03','a04','a05','b01','b02','b03','b04','b05',
-            'c01','c02','d01','d02','d03','d04','d05','d06','d07',
-            'd08','d09','d10','d11','d12','d13','d14','e01','e02','e03',
-            'e04','f01','f02','f03','f04','f05','f07','f08',
-            'f09','f10','f11'
-        ];
-        
-        // 影片清單 (大寫 .MP4)
-        const videoNames = ['01', '02', '03', '04', '05', '06', '07'];
-
-        const grid = document.getElementById('portfolio-grid');
-
-        // 1. 生成圖片
-        imageNames.forEach(name => {
-            const div = document.createElement('div');
-            div.className = 'thumb reveal';
-            const img = new Image();
-            const jpgPath = `images/${name}.jpg`;
-            const pngPath = `images/${name}.png`;
-            
-            img.onload = () => setupThumb(div, jpgPath, name);
-            img.onerror = () => setupThumb(div, pngPath, name);
-            img.src = jpgPath;
-            grid.appendChild(div);
-        });
-
-        // 2. 生成影片 (路徑大寫 .MP4)
-        videoNames.forEach(name => {
-            const path = `videos/${name}.MP4`;
-            const div = document.createElement('div');
-            div.className = 'thumb reveal';
-            div.onclick = () => openLightbox(path, true);
-            div.innerHTML = `<video src="${path}" muted loop autoplay playsinline></video>`;
-            grid.appendChild(div);
-        });
-
-        function setupThumb(container, path, name) {
-            container.onclick = () => openLightbox(path, false);
-            container.innerHTML = `<img src="${path}" alt="${name}">`;
-        }
-
-        function openLightbox(src, isVideo) {
-            const lb = document.getElementById('lightbox');
-            lb.innerHTML = isVideo 
-                ? `<video src="${src}" controls autoplay loop style="max-width:90%; max-height:90%; border:1px solid #333;"></video>`
-                : `<img src="${src}" style="max-width:90%; max-height:90%; border:1px solid #333;">`;
-            lb.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-            const lb = document.getElementById('lightbox');
-            lb.style.display = 'none';
-            lb.innerHTML = ''; 
-            document.body.style.overflow = 'auto';
-        }
-
-        function reveal() {
-            var r = document.querySelectorAll('.reveal');
-            for (var i = 0; i < r.length; i++) {
-                if (r[i].getBoundingClientRect().top < window.innerHeight - 100) r[i].classList.add('active');
-            }
-        }
-        window.addEventListener('scroll', reveal);
-        setInterval(reveal, 500);
+        // 防止拖動圖片
         document.ondragstart = function() { return false; };
     </script>
 </body>
