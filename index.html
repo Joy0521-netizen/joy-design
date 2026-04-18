@@ -50,7 +50,7 @@
             border-radius: 2px;
         }
 
-        /* 質感調教：微霧 0.5px */
+        /* 🔒 質感調教已恢復：微霧 0.5px，確保看得到底圖細節 */
         .thumb img, .thumb video { 
             width: 100%; height: 100%; object-fit: cover; 
             filter: brightness(0.85) blur(0.5px);
@@ -136,7 +136,7 @@
         ];
         
         // 影片清單
-        const videoNames = ['01', '02', '03', '04', '05', '06'];
+        const videoNames = ['01', '02', '03', '04', '05', '06', '07'];
 
         const grid = document.getElementById('portfolio-grid');
 
@@ -200,9 +200,9 @@
         // 事件監聽
         window.addEventListener('scroll', reveal);
         
-        // 初始載入觸發
+        // 初始載入觸發：延遲 200ms 確保 DOM 與圖片載入狀態
         window.onload = () => {
-            setTimeout(reveal, 200); // 延遲 200ms 確保 DOM 與圖片載入狀態
+            setTimeout(reveal, 200); 
         };
 
         // 防止拖動圖片
