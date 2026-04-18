@@ -19,9 +19,16 @@
             overflow-x: hidden;
         }
 
+        /* 燈箱設定 */
+        #lightbox {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.95); z-index: 10000; cursor: zoom-out; 
+            align-items: center; justify-content: center; backdrop-filter: blur(15px);
+        }
+
         .hero {
             height: 80vh;
-            background: fixed center/cover url('images/a01.jpg'); /* 暫用a01當背景 */
+            background: fixed center/cover url('images/SCPE_BloodSplatter1.png');
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             position: relative;
         }
@@ -32,84 +39,173 @@
 
         .hero-content { z-index: 2; text-align: center; }
         h1 { font-size: 4rem; letter-spacing: 15px; margin: 0; font-weight: 200; text-shadow: 0 0 20px var(--glow); }
-        .tagline { font-family: sans-serif; letter-spacing: 8px; font-size: 0.7rem; color: var(--glow); margin-top: 20px; }
+        .tagline { color: var(--text-gold); font-style: italic; font-size: 1.1rem; margin-top: 15px; letter-spacing: 2px; }
 
         .work-container { max-width: 1200px; margin: 80px auto; padding: 0 20px; }
-        
-        /* 強制一排三個的語法 */
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 25px; 
-        }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
         
         .thumb {
-            aspect-ratio: 1/1; /* 裁切成正方形會讓三格排版更像藝廊 */
-            overflow: hidden; border: 1px solid #222; background: #000;
-            position: relative; transition: 0.5s;
+            aspect-ratio: 1/1; overflow: hidden; border: 1px solid #222; background: #000;
+            position: relative; transition: 0.5s; cursor: zoom-in;
+            border-radius: 2px;
         }
-        .thumb img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; transition: 1s; }
-        .thumb:hover img { transform: scale(1.1); filter: brightness(1.2); }
 
-        /* 手機版自動變一排一格 */
+        /* 質感調教：微霧 0.5px */
+        .thumb img, .thumb video { 
+            width: 100%; height: 100%; object-fit: cover; 
+            filter: brightness(0.85) blur(0.5px);
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        /* 電腦版 Hover 效果 */
+        @media (min-width: 901px) {
+            .thumb:hover img, .thumb:hover video { 
+                transform: scale(1.05); 
+                filter: brightness(1.1) blur(0px);
+            }
+        }
+
+        /* 手機版自適應 */
         @media (max-width: 900px) {
-            .grid { grid-template-columns: repeat(1, 1fr); }
+            .grid { 
+                grid-template-columns: repeat(1, 1fr); 
+                gap: 25px; 
+            }
             h1 { font-size: 2.5rem; letter-spacing: 8px; }
+            
+            .thumb img, .thumb video {
+                filter: brightness(0.95) blur(0.3px) !important;
+                -webkit-filter: brightness(0.95) blur(0.3px) !important;
+            }
+
+            .thumb:active img, .thumb:active video {
+                filter: brightness(1.1) blur(0px) !important;
+                transform: scale(0.98);
+            }
         }
 
-        footer { 
-            padding: 80px 20px; border-top: 1px solid #1a0b2e; text-align: center;
-            background: #050208;
-        }
-        .copyright { font-size: 0.65rem; letter-spacing: 3px; color: #666; line-height: 2; }
+        /* 強化版 Footer 樣式 */
+        footer { padding: 100px 20px; border-top: 1px solid var(--accent-purple); text-align: center; background: #050208; }
+        .copyright-wrapper { max-width: 600px; margin: 0 auto; }
+        .copyright-text { font-size: 0.65rem; letter-spacing: 3px; color: #666; line-height: 2; }
+        .footer-divider { margin: 25px auto; border-top: 1px solid var(--text-gold); width: 40px; opacity: 0.6; }
 
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.2, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body oncontextmenu="return false;">
 
+    <div id="lightbox" onclick="closeLightbox()"></div>
+
     <section class="hero">
         <div class="hero-content reveal">
             <h1>JOY DESIGN</h1>
-            <div class="tagline">ART DIRECTION & AI VISUAL LABORATORY</div>
+            <div class="tagline">「Aesthetics Driven • AI Powered」</div>
         </div>
     </section>
 
     <div class="work-container">
-        <div class="grid">
-            <div class="thumb reveal"><img src="images/a01.jpg"></div>
-            <div class="thumb reveal"><img src="images/a02.jpg"></div>
-            <div class="thumb reveal"><img src="images/a03.jpg"></div>
-            <div class="thumb reveal"><img src="images/a04.jpg"></div>
-            <div class="thumb reveal"><img src="images/a05.jpg"></div>
-            <div class="thumb reveal"><img src="images/b01.jpg"></div>
-            <div class="thumb reveal"><img src="images/b02.jpg"></div>
-            <div class="thumb reveal"><img src="images/b03.jpg"></div>
-            <div class="thumb reveal"><img src="images/b04.jpg"></div>
-            <div class="thumb reveal"><img src="images/b05.jpg"></div>
-        </div>
+        <div class="grid" id="portfolio-grid"></div>
     </div>
 
     <footer>
-        <div class="copyright reveal">
-            © 2026 JOY DESIGN. ALL RIGHTS RESERVED.<br>
-            <span style="color:var(--text-gold)">DIRECTED BY HUMAN • POWERED BY AI</span>
+        <div class="reveal">
+            <div class="copyright-wrapper">
+                <p style="margin-bottom: 10px; color: #888; font-size: 0.7rem; letter-spacing: 2px;">AI VISUAL LAB PROJECT NO. 2026-X</p>
+                <div style="font-size: 0.9rem; letter-spacing: 5px; font-weight: 700; color: #fff;">JOY DESIGN</div>
+                <div class="footer-divider"></div>
+                <div class="copyright-text">
+                    © 2026 JOY DESIGN. ALL RIGHTS RESERVED.<br>
+                    <span style="color:var(--text-gold)">ART DIRECTION & AI VISUAL LABORATORY</span><br>
+                    <span style="font-size: 0.55rem; opacity: 0.5;">TAIWAN, TAINAN | UNAUTHORIZED USE PROHIBITED.</span>
+                </div>
+            </div>
         </div>
     </footer>
 
     <script>
+        // 圖片清單
+        const imageNames = [
+            'a01','a02','a03','a04','a05','b01','b02','b03','b04','b05',
+            'c01','c02','d01','d02','d03','d04','d05','d06','d07',
+            'd08','d09','d10','d11','d12','d13','d14','e01','e02','e03',
+            'e04','f01','f02','f03','f04','f05','f07','f08',
+            'f09','f10','f11'
+        ];
+        
+        // 影片清單
+        const videoNames = ['01', '02', '03', '04', '05', '06', '07'];
+
+        const grid = document.getElementById('portfolio-grid');
+
+        // 1. 生成圖片
+        imageNames.forEach(name => {
+            const div = document.createElement('div');
+            div.className = 'thumb reveal';
+            const img = new Image();
+            const jpgPath = `images/${name}.jpg`;
+            const pngPath = `images/${name}.png`;
+            
+            img.onload = () => setupThumb(div, jpgPath, name);
+            img.onerror = () => setupThumb(div, pngPath, name);
+            img.src = jpgPath;
+            grid.appendChild(div);
+        });
+
+        // 2. 生成影片
+        videoNames.forEach(name => {
+            const path = `videos/${name}.MP4`;
+            const div = document.createElement('div');
+            div.className = 'thumb reveal';
+            div.onclick = () => openLightbox(path, true);
+            div.innerHTML = `<video src="${path}" muted loop autoplay playsinline></video>`;
+            grid.appendChild(div);
+        });
+
+        function setupThumb(container, path, name) {
+            container.onclick = () => openLightbox(path, false);
+            container.innerHTML = `<img src="${path}" alt="${name}">`;
+        }
+
+        function openLightbox(src, isVideo) {
+            const lb = document.getElementById('lightbox');
+            lb.innerHTML = isVideo 
+                ? `<video src="${src}" controls autoplay loop style="max-width:90%; max-height:90%; border:1px solid #333; box-shadow:0 0 50px #000;"></video>`
+                : `<img src="${src}" style="max-width:90%; max-height:90%; border:1px solid #333; box-shadow:0 0 50px #000;">`;
+            lb.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lb = document.getElementById('lightbox');
+            lb.style.display = 'none';
+            lb.innerHTML = ''; 
+            document.body.style.overflow = 'auto';
+        }
+
+        // 捲動顯示邏輯優化
         function reveal() {
-            var r = document.querySelectorAll('.reveal');
-            for (var i = 0; i < r.length; i++) {
-                var windowHeight = window.innerHeight;
-                var revealTop = r[i].getBoundingClientRect().top;
-                if (revealTop < windowHeight - 100) r[i].classList.add('active');
+            const r = document.querySelectorAll('.reveal');
+            for (let i = 0; i < r.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = r[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) {
+                    r[i].classList.add('active');
+                }
             }
         }
+
+        // 事件監聽
         window.addEventListener('scroll', reveal);
-        reveal();
+        
+        // 初始載入觸發
+        window.onload = () => {
+            setTimeout(reveal, 200); // 延遲 200ms 確保 DOM 與圖片載入狀態
+        };
+
+        // 防止拖動圖片
         document.ondragstart = function() { return false; };
     </script>
 </body>
